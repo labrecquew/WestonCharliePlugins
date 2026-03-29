@@ -137,13 +137,12 @@ public class BasicStrategy {
         // Subtract 21 since the player's hand starts at 21 and we're working
         // our way down through section 1 from index 0.
         int rowIndex = 21 - value;
-
         Play[] row = section1Rules[rowIndex];
 
         // TODO: Complete getting the column in the table.
 
         // Subtract 2 since the dealer's up-card starts at 2
-        int colIndex = upCard.getRank() - 2;
+        int colIndex = upCard.value() - 2;
 
         if(upCard.isFace())
             colIndex = 10 - 2;
@@ -181,7 +180,7 @@ public class BasicStrategy {
         // TODO: Complete getting the column in the table.
 
         // Subtract 2 since the dealer's up-card starts at 2
-        int colIndex = upCard.getRank() - 2;
+        int colIndex = upCard.value() - 2;
 
         if(upCard.isFace())
             colIndex = 10 - 2;
@@ -192,6 +191,11 @@ public class BasicStrategy {
 
         // At this row, col we should have the correct play defined.
         Play play = row[colIndex];
+
+        // Only allow DOUBLE_DOWN on first 2 cards
+        if(play == Play.DOUBLE_DOWN && hand.size() > 2) {
+            play = Play.HIT;
+        }
 
         return play;
     }
@@ -212,10 +216,10 @@ public class BasicStrategy {
         int nonAceValue;
 
         if(card1.getRank() == Card.ACE) {
-            nonAceValue = card2.getRank();
+            nonAceValue = card2.value();
         }
         else {
-            nonAceValue = card1.getRank();
+            nonAceValue = card1.value();
         }
 
         // Section 3 now supports all hands
@@ -233,7 +237,7 @@ public class BasicStrategy {
         // TODO: Complete getting the column in the table.
 
         // Subtract 2 since the dealer's up-card starts at 2
-        int colIndex = upCard.getRank() - 2;
+        int colIndex = upCard.value() - 2;
 
         if(upCard.isFace())
             colIndex = 10 - 2;
@@ -256,7 +260,7 @@ public class BasicStrategy {
          If we are in section 4, we know we have a pair. This variable will be the value.
          EX: If pairValue is 8, then we have two 8s.
          */
-        int pairValue = card1.getRank();
+        int pairValue = card1.value();
 
         // Section 3 now supports all hands
         if(card1.getRank() != card2.getRank())
@@ -276,7 +280,7 @@ public class BasicStrategy {
         // TODO: Complete getting the column in the table.
 
         // Subtract 2 since the dealer's up-card starts at 2
-        int colIndex = upCard.getRank() - 2;
+        int colIndex = upCard.value() - 2;
 
         if(upCard.isFace())
             colIndex = 10 - 2;
